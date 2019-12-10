@@ -5,7 +5,7 @@ from pathlib import Path
 class Test_Day1(unittest.TestCase):
     # part 1
     def test_fuel_requirement(self):
-        with open(Path(__file__).parent.resolve() / Path('day_1_example.dat')) as data:
+        with open(Path(__file__).parent.resolve() / Path('day_1_input.example-dat')) as data:
             fuel_requirements = data.read().splitlines()
 
         just_mass = []
