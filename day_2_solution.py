@@ -8,18 +8,20 @@
 
 
 def computer(program, position):
-    first_input, second_input = program[position+1], program[position+2]
-
-    # 1 is add
-    if program[position] == 1:
-        program[position+3] = first_input + second_input
-
-    # 2 is multiply
-    if program[position] == 2:
-        program[position+3] = first_input + second_input
-    
     # 99 is halt
     if program[position] == 99:
         return program[0]
 
-    computer(program, [position+4])
+    first_input, second_input = program[program[position+1]], program[program[position+2]]
+
+    # 1 is add
+    if program[position] == 1:
+        result = first_input + second_input
+
+    # 2 is multiply
+    if program[position] == 2:
+        result = first_input * second_input
+
+    program[program[position+3]] = result
+
+    return computer(program, position+4)

@@ -20,7 +20,7 @@ class Test_Day2(unittest.TestCase):
         with open(Path(__file__).parent.resolve() / Path('day_2_input.dat')) as data:
             program = [int(x) for x in data.read().split(',')]
 
-            expected = 2
+            expected = 3516593
             actual = computer(program, 0)
 
             self.assertEqual(expected, actual)
