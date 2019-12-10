@@ -24,3 +24,14 @@ class Test_Day2(unittest.TestCase):
             actual = computer(program, 0)
 
             self.assertEqual(expected, actual)
+
+    # looking for noun [1], verb [2]
+    # seeking 196
+    def test_goal_seek(self):
+        with open(Path(__file__).parent.resolve() / Path('day_2_input.dat')) as data:
+            program = [int(x) for x in data.read().split(',')]
+
+            expected = 3516593
+            actual = computer(program, 0)
+
+            self.assertEqual(expected, actual)

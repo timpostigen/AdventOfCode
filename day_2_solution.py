@@ -25,3 +25,7 @@ def computer(program, position):
     program[program[position+3]] = result
 
     return computer(program, position+4)
+
+
+def goal_seek():
+    pass
