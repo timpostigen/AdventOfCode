@@ -72,5 +72,16 @@ Once the program has halted, its output is available at address 0, also just lik
 
 Find the input noun and verb that cause the program to produce the output 19690720. What is 100 * noun + verb? (For example, if noun=12 and verb=2, the answer would be 1202.)
 
-### Notes ### 
+--- Notes ---
 all we care about is the last time 0 is set, backtrack from there
+actually run it backwards?
+
+at instruction 31
+adds position 6 and 119
+instr 30 sets 119 and 115
+
+after instruction 5, each instruction works with the last one
+order of the operands doesn't matter
+
+only a few static operands:
+9,5,6,10,2

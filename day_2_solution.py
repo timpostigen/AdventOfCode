@@ -9,6 +9,11 @@
 
 def computer(program, position):
     # 99 is halt
+    if program[position+3] == 0:
+        instruction = round(position/4+1)
+
+        print(f"\n0 written at address {position}, instruction {instruction}")
+
     if program[position] == 99:
         return program[0]
 
