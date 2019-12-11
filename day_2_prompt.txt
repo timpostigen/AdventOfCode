@@ -88,4 +88,5 @@ only a few static operands:
      V
 X,1,2,3,4
 
-2 is used in 31
+1 is used to start the chain, 2 is added into the chain at 31
+then 2 is added to the result at 32 and the final value is set
