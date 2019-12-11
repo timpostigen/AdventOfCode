@@ -84,4 +84,8 @@ after instruction 5, each instruction works with the last one
 order of the operands doesn't matter
 
 only a few static operands:
-9,5,6,10,2
+2,5,6,9,10
+     V
+X,1,2,3,4
+
+2 is used in 31
