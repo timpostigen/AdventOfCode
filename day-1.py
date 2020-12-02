@@ -1,3 +1,4 @@
+
 import csv
 
 def productOfSumMatchingEntries(targetSum, expenses):
@@ -7,7 +8,9 @@ def productOfSumMatchingEntries(targetSum, expenses):
         base_expense = expenses[i]
 
         for expense in expenses[i+1:]:
-            if base_expense + expense == targetSum:
+            expenseSum = base_expense + expense
+            
+            if expenseSum == targetSum:
                 return base_expense * expense
 
 
@@ -21,3 +24,22 @@ with open('day-1-input.txt') as csvfile:
             expenses.append(row)
 print(len(expenses))
 print(productOfSumMatchingEntries(targetSum, expenses))
+
+
+def productOfSumMatchingEntries(targetSum, expenses):
+    # Optimization: sort then cutoff
+
+    for i in range(expenses.__len__):
+        base_expense = expenses[i]
+
+        for expense in expenses[i:]:
+            
+            # if base_expense + expense == targetSum:
+            #     return base_expense * expense
+
+
+targetSum = 2020
+expenses = [1721, 979, 366, 299, 675, 1456]
+print(expenses)
+
+# productOfSumMatchingEntries(targetSum, expenses)
