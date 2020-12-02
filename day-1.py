@@ -13,6 +13,8 @@ def productOfSumMatchingEntries(targetSum, expenses):
             if expenseSum == targetSum:
                 return base_expense * expense
 
+def productOfTripleSumMatchingEntries(targetSum, expenses):
+    pass
 
 targetSum = 2020
 
@@ -25,4 +27,4 @@ with open(expenses_file_name) as expenses_file:
     for line in expenses_lines:
             expenses.append(int(line))
 
-print(productOfSumMatchingEntries(targetSum, expenses))
+print(productOfTripleSumMatchingEntries(targetSum, expenses))
