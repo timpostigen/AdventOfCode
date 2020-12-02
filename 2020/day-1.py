@@ -1,5 +1,4 @@
-
-import csv
+from utility import readLines
 
 def productOfSumMatchingEntries(targetSum, expenses):
     # Optimization: sort then cutoff
@@ -26,13 +25,6 @@ def productOfTripleSumMatchingEntries(targetSum, expenses):
 
 targetSum = 2020
 
-# from Convert from CSV to array in Python - https://stackoverflow.com/a/37174260
-expenses = []
-expenses_file_name = 'day-1-input.txt'
-
-with open(expenses_file_name) as expenses_file:
-    expenses_lines = expenses_file.readlines()
-    for line in expenses_lines:
-            expenses.append(int(line))
+expenses = readLines('day-1-input.txt')
 
 print(productOfTripleSumMatchingEntries(targetSum, expenses))
