@@ -14,6 +14,14 @@ def productOfSumMatchingEntries(targetSum, expenses):
                 return base_expense * expense
 
 def productOfTripleSumMatchingEntries(targetSum, expenses):
+    for idx, first_expense in enumerate(expenses):
+        for second_expense in expenses[idx+1:]:
+            for third_expense in expenses[idx + 2:]:
+                expenseSum = first_expense + second_expense + third_expense
+
+                if expenseSum == targetSum:
+                    return first_expense * second_expense * third_expense
+
     pass
 
 targetSum = 2020
