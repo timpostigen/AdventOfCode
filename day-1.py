@@ -18,10 +18,11 @@ targetSum = 2020
 
 # from Convert from CSV to array in Python - https://stackoverflow.com/a/37174260
 expenses = []
-with open('day-1-input.txt') as csvfile:
-    reader = csv.reader(csvfile, quoting=csv.QUOTE_NONNUMERIC)
-    for row in reader:
-            expenses.append(row)
+expenses_file_name = 'day-1-input.txt'
 
-print(len(expenses))
+with open(expenses_file_name) as expenses_file:
+    expenses_lines = expenses_file.readlines()
+    for line in expenses_lines:
+            expenses.append(int(line))
+
 print(productOfSumMatchingEntries(targetSum, expenses))
