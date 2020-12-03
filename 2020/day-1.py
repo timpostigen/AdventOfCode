@@ -1,4 +1,4 @@
-from utility import readLines
+from utility import read_lines
 
 def productOfSumMatchingEntries(targetSum, expenses):
     # Optimization: sort then cutoff
@@ -25,6 +25,6 @@ def productOfTripleSumMatchingEntries(targetSum, expenses):
 
 targetSum = 2020
 
-expenses = readLines('day-1-input.txt')
+expenses = read_lines('day-1-input.txt', 1)
 
 print(productOfTripleSumMatchingEntries(targetSum, expenses))

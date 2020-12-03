@@ -1,14 +1,17 @@
 from pathlib import Path
 
-def readLines(line_filename):
-    lines = []
-
+def read_lines(line_filename, targetType=None):
     line_file_path = Path(__file__).parent / line_filename
 
+    file_lines = []
     with open(line_file_path) as file:
         file_lines = file.readlines()
 
+    lines = []
+    if(not targetType):
+        lines = file_lines
+    else:
         for line in file_lines:
-                lines.append(int(line))
+            lines.append(type(targetType)(line))
 
     return lines
