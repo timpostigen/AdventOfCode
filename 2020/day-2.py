@@ -37,8 +37,13 @@ class passwdPhilo:
 
         return valid
 
-    def validate_password_line_position(self, line):
-        pass
+    def validate_password_line_position(self, start, end, letter, password):
+        first_postion = start
+        second_postion = end
+
+        valid = password[first_postion-1] == letter and password[second_postion-1] != letter
+
+        return valid
 
     def count_valid_passwords(self, password_entries= None):
         if(not password_entries):
@@ -46,7 +51,7 @@ class passwdPhilo:
         count = 0
         
         for password in password_entries:
-            if(self.validate_password_bounds(**password)):
+            if(self.validate_password_line_position(**password)):
                 count += 1
         
         return count
