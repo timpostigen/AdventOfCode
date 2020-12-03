@@ -1,4 +1,4 @@
 *.pyc
 *.dat
 launch.json
-.vscode/.ropeproject/objectdb
+.vscode
