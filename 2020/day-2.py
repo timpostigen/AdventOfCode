@@ -38,10 +38,10 @@ class passwdPhilo:
         return valid
 
     def validate_password_line_position(self, start, end, letter, password):
-        first_postion = start
-        second_postion = end
+        first_position = start-1
+        second_position = end-1
 
-        valid = password[first_postion-1] == letter and password[second_postion-1] != letter
+        valid = (password[first_position] == letter) ^ (password[second_position] == letter)
 
         return valid
 
@@ -68,5 +68,3 @@ pp.password_entries = password_lines
 # valid_password = pp.validate_password(**pp.password_entries[0])
 
 print(pp.count_valid_passwords())
-
-# print(pp.countValidPasswords(passwords))
