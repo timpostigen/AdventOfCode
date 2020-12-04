@@ -70,6 +70,7 @@ class TobboganTrajectory:
         docstring
         """
         self.base_map = base_map
+        self.base_map_width = len(base_map[0])
     
     def getCoordinate(self, x, y):
         """
@@ -77,10 +78,33 @@ class TobboganTrajectory:
         """
         return self.base_map[x][y]
 
+    def countTrees(self):
+        """
+        docstring
+        """
+        right_position = 0
+        trees = 0
+        right_distance = 3
+
+        # watch out for zero indexing
+        for row in self.base_map[1:]:
+            right_position += right_distance
+
+            if right_position >= self.base_map_width:
+                # could do something with mod to simulat wrapping
+                right_position = right_position - self.base_map_width # maybe -1?
+
+            if row[right_position] == '#':
+                trees += 1
+
+        return trees
+            
+                
+
 
 tt = TobboganTrajectory(
     base_map = read_lines('day_3_input.txt')
 )
 
-print(tt.getCoordinate(6,2))
+print(tt.countTrees())
     
