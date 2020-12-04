@@ -56,7 +56,7 @@ class ReportRepair(object):
 
 targetSum = 2020
 
-expenses = read_lines('day-1-input.txt', 1)
+expenses = read_lines('day_1_input.txt', 1)
 
 rr = ReportRepair()
 

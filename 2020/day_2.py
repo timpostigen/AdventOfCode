@@ -102,7 +102,7 @@ class passwdPhilo:
 pp = passwdPhilo()
 
 password_lines = []
-for line in read_lines('day-2-input.txt'):
+for line in read_lines('day_2_input.txt'):
     parsed_password = pp.parse_password_line(line)
     password_lines.append(parsed_password)
 
