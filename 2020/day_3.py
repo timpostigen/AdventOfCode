@@ -79,7 +79,7 @@ class TobboganTrajectory:
 
 
 tt = TobboganTrajectory(
-    base_map = read_lines('day-2-input.txt')
+    base_map = read_lines('day_3_input.txt')
 )
 
 print(tt.getCoordinate(6,2))
