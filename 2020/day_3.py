@@ -62,6 +62,27 @@ class TobboganTrajectory:
     Notes:
     Width of the map always needs to be 3x the height (probably rounded up, not sure). My input height was 323, and width was 32 so, probably 11 repetitions to the right.
 
+    Your puzzle answer was 259.
+
+    The first half of this puzzle is complete! It provides one gold star: *
+    --- Part Two ---
+
+    Time to check the rest of the slopes - you need to minimize the probability of a sudden arboreal stop, after all.
+
+    Determine the number of trees you would encounter if, for each of the following slopes, you start at the top-left corner and traverse the map all the way to the bottom:
+
+        Right 1, down 1.
+        Right 3, down 1. (This is the slope you already checked.)
+        Right 5, down 1.
+        Right 7, down 1.
+        Right 1, down 2.
+
+    In the above example, these slopes would find 2, 7, 3, 4, and 2 tree(s) respectively; multiplied together, these produce the answer 336.
+
+    What do you get if you multiply together the number of trees encountered on each of the listed slopes?
+
+    Notes:
+    answer < 2288482560
     """
     #endregion
     
@@ -78,14 +99,12 @@ class TobboganTrajectory:
         """
         return self.base_map[x][y]
 
-    def countTrees(self):
+    def countTrees(self, right_distance, down_distance=1):
         """
         docstring
         """
         right_position = 0
         trees = 0
-        right_distance = 3
-        down_distance = 1
 
         marked_map = ''
 
@@ -96,20 +115,21 @@ class TobboganTrajectory:
 
             if right_position >= self.base_map_width:
                 # could do something with mod to simulat wrapping
-                right_position = right_position - self.base_map_width + 1
+                right_position = right_position - self.base_map_width
 
             if row[right_position] == '#':
                 trees += 1
 
             marked_map += f'{idx}   {str.strip(row)}\n{" " * (right_position+3+len(str(idx)))}^ {trees}\n'
 
-        return marked_map, trees
+        return trees# , marked_map
             
+# trouble at line 30 for normal input
 
 input_file = 'day_3_input.txt'
 output_file = 'day_3_output.txt'
 
-brute_force = True
+brute_force = False
 if(brute_force):
     input_file = input_file.replace('.txt', '_brute_force.txt') 
     output_file = output_file.replace('.txt', '_brute_force.txt') 
@@ -118,9 +138,28 @@ if(brute_force):
 tt = TobboganTrajectory(
     base_map = read_lines(input_file)
 )
-marked_map, trees = tt.countTrees()
 
-with open(output_file, 'w') as f:
-    f.write(marked_map)
+# Part 1 stuff
+# _, trees = tt.countTrees(3, 1)
 
-print(f"Total Trees:\n{trees}")
+# with open(output_file, 'w') as f:
+#     f.write(marked_map)
+
+# print(f"Total Trees:\n{trees}")
+
+# Part 2 stuff
+product = 1
+
+for right_distance in 1, 3, 5, 7:
+    trees = tt.countTrees(right_distance)
+
+    print(f'{right_distance}: {trees}')
+
+    product = product * trees
+
+trees = tt.countTrees(1, 2)
+print(f'1, 2: {trees}')
+
+product = product * tt.countTrees(1, 2)
+
+print(product)
