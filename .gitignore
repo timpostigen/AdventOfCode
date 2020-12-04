@@ -2,3 +2,5 @@
 *.dat
 launch.json
 .vscode
+day_3_output_brute_force.txt
+day_3_output.txt

@@ -85,26 +85,42 @@ class TobboganTrajectory:
         right_position = 0
         trees = 0
         right_distance = 3
+        down_distance = 1
 
+        marked_map = ''
+
+        marked_map += f'0   {str.strip(self.base_map[0])}\n    ^ 0\n'
         # watch out for zero indexing
-        for row in self.base_map[1:]:
+        for idx, row in enumerate(self.base_map[1::down_distance], start=1):
             right_position += right_distance
 
             if right_position >= self.base_map_width:
                 # could do something with mod to simulat wrapping
-                right_position = right_position - self.base_map_width # maybe -1?
+                right_position = right_position - self.base_map_width + 1
 
             if row[right_position] == '#':
                 trees += 1
 
-        return trees
+            marked_map += f'{idx}   {str.strip(row)}\n{" " * (right_position+3+len(str(idx)))}^ {trees}\n'
+
+        return marked_map, trees
             
-                
+
+input_file = 'day_3_input.txt'
+output_file = 'day_3_output.txt'
+
+brute_force = True
+if(brute_force):
+    input_file = input_file.replace('.txt', '_brute_force.txt') 
+    output_file = output_file.replace('.txt', '_brute_force.txt') 
 
 
 tt = TobboganTrajectory(
-    base_map = read_lines('day_3_input.txt')
+    base_map = read_lines(input_file)
 )
+marked_map, trees = tt.countTrees()
 
-print(tt.countTrees())
-    
+with open(output_file, 'w') as f:
+    f.write(marked_map)
+
+print(f"Total Trees:\n{trees}")
