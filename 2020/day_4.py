@@ -1,4 +1,4 @@
-
+from utility import read_lines
 
 class PassportProcessing:
     # region --- Day 4: Passport Processing ---

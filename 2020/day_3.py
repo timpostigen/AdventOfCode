@@ -163,3 +163,6 @@ print(f'1, 2: {trees}')
 product = product * tt.countTrees(1, 2)
 
 print(product)
+
+if __name__ == "__main__":
+    print('yeehaw')
