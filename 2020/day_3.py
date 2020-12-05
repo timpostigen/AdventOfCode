@@ -1,6 +1,6 @@
 from utility import read_lines
 
-class TobboganTrajectory:
+class ToboganTrajectory:
     # region --- Day 3: Toboggan Trajectory --- docstring
     """
     --- Day 3: Toboggan Trajectory ---
@@ -99,7 +99,7 @@ class TobboganTrajectory:
         """
         return self.base_map[x][y]
 
-    def countTrees(self, right_distance, down_distance=1):
+    def count_trees(self, right_distance, down_distance=1, **kwargs):
         """
         docstring
         """
@@ -135,7 +135,7 @@ if(brute_force):
     output_file = output_file.replace('.txt', '_brute_force.txt') 
 
 
-tt = TobboganTrajectory(
+tt = ToboganTrajectory(
     base_map = read_lines(input_file)
 )
 
@@ -151,16 +151,16 @@ tt = TobboganTrajectory(
 product = 1
 
 for right_distance in 1, 3, 5, 7:
-    trees = tt.countTrees(right_distance)
+    trees = tt.count_trees(right_distance)
 
     print(f'{right_distance}: {trees}')
 
     product = product * trees
 
-trees = tt.countTrees(1, 2)
+trees = tt.count_trees(1, 2)
 print(f'1, 2: {trees}')
 
-product = product * tt.countTrees(1, 2)
+product = product * tt.count_trees(1, 2)
 
 print(product)
 
