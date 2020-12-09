@@ -1,7 +1,8 @@
 from utility import read_lines
 from pathlib import Path
-class ToboganTrajectory:
-    #region--- Day 9: Encoding Error ---
+
+class EncodingError:
+    #region --- Day 9: Encoding Error ---
     '''
     With your neighbor happily enjoying their video game, you turn your attention to an open data port on the little screen in the seat in front of you.
 
@@ -52,19 +53,32 @@ class ToboganTrajectory:
     The first step of attacking the weakness in the XMAS data is to find the first number in the list (after the preamble) which is not the sum of two of the 25 numbers before it. What is the first number that does not have this property?
     '''
     #endregion
-    def __init__(self, previous_window=25):
+    def __init__(self, full_stream, window_width=25):
         """
         docstring
         """
-        self.previous_window = previous_window
+        self.full_stream = full_stream
+        self.window_width = window_width
+
+        self.preamble = self.full_stream[:25]
+        self.data = self.full_stream[25:]
 
 
     def find_outlier(self):
         """
         docstring
         """
-        pass
+        print(self.preamble)
+        # optimization: lower than lowest, higher than highest
+        # double binary search?
+
+        for datum, idx in enumerate(self.data):
+            window = self.data[idx:idx+self.window_width]
+
+            print(datum + window)
 
 if __name__ == "__main__":
     data_stream = read_lines(f'{Path(__file__).stem}_input.txt', targetType=-1)
-    print(data_stream)
+
+    ee = EncodingError(data_stream)
+    ee.find_outlier()
