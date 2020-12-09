@@ -122,7 +122,7 @@ class ToboganTrajectory:
 
             marked_map += f'{idx}   {str.strip(row)}\n{" " * (right_position+3+len(str(idx)))}^ {trees}\n'
 
-        return trees# , marked_map
+        return trees, marked_map
             
 # trouble at line 30 for normal input
 
@@ -151,7 +151,12 @@ tt = ToboganTrajectory(
 product = 1
 
 for right_distance in 1, 3, 5, 7:
-    trees = tt.count_trees(right_distance)
+    trees, marked_map = tt.count_trees(right_distance)
+
+    output_file = f'day_3_r{right_distance}_output.txt'
+
+    with open(output_file, 'w') as f:
+        f.write(marked_map)
 
     print(f'{right_distance}: {trees}')
 
