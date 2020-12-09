@@ -86,12 +86,13 @@ class ToboganTrajectory:
     """
     #endregion
     
-    def __init__(self, base_map):
+    def __init__(self, base_map, brute_force_suffix):
         """
         docstring
         """
         self.base_map = base_map
         self.base_map_width = len(base_map[0])
+        self.brute_force_suffix = brute_force_suffix
     
     def getCoordinate(self, x, y):
         """
@@ -99,7 +100,7 @@ class ToboganTrajectory:
         """
         return self.base_map[x][y]
 
-    def count_trees(self, right_distance, down_distance=1, **kwargs):
+    def count_trees(self, right_distance, down_distance=1, write_marked_map=False, **kwargs):
         """
         docstring
         """
@@ -110,7 +111,7 @@ class ToboganTrajectory:
 
         marked_map += f'0   {str.strip(self.base_map[0])}\n    ^ 0\n'
         # watch out for zero indexing
-        for idx, row in enumerate(self.base_map[1::down_distance], start=1):
+        for idx, row in enumerate(self.base_map[down_distance::down_distance], start=1):
             right_position += right_distance
 
             if right_position >= self.base_map_width:
@@ -120,54 +121,47 @@ class ToboganTrajectory:
             if row[right_position] == '#':
                 trees += 1
 
-            marked_map += f'{idx}   {str.strip(row)}\n{" " * (right_position+3+len(str(idx)))}^ {trees}\n'
+            map_line = f'{idx}   {str.strip(row)}\n'
+            position_line = f'{" " * (right_position+3+len(str(idx)))}^ {trees}\n'
 
-        return trees, marked_map
-            
-# trouble at line 30 for normal input
+            marked_map += map_line + position_line
 
-input_file = 'day_3_input.txt'
-output_file = 'day_3_output.txt'
+        if(write_marked_map):
+            output_file = f'day_3_r{right_distance}_d{down_distance}{self.brute_force_suffix}_output.txt'
 
-brute_force = False
-if(brute_force):
-    input_file = input_file.replace('.txt', '_brute_force.txt') 
-    output_file = output_file.replace('.txt', '_brute_force.txt') 
+            with open(output_file, 'w') as f:
+                f.write(marked_map)
 
+        return trees
 
-tt = ToboganTrajectory(
-    base_map = read_lines(input_file)
-)
+    def route_product(self, slopes):
+        product = 1
 
-# Part 1 stuff
-# _, trees = tt.countTrees(3, 1)
+        for slope in slopes:
+            if type(slope) == tuple:
+                product = product * tt.count_trees(*slope, True)
+            else:
+                product = product * tt.count_trees(slope, write_marked_map=True)
 
-# with open(output_file, 'w') as f:
-#     f.write(marked_map)
-
-# print(f"Total Trees:\n{trees}")
-
-# Part 2 stuff
-product = 1
-
-for right_distance in 1, 3, 5, 7:
-    trees, marked_map = tt.count_trees(right_distance)
-
-    output_file = f'day_3_r{right_distance}_output.txt'
-
-    with open(output_file, 'w') as f:
-        f.write(marked_map)
-
-    print(f'{right_distance}: {trees}')
-
-    product = product * trees
-
-trees = tt.count_trees(1, 2)
-print(f'1, 2: {trees}')
-
-product = product * tt.count_trees(1, 2)
-
-print(product)
+        return product
 
 if __name__ == "__main__":
-    print('yeehaw')
+    bfs = '_brute_force'
+    input_file = f'day_3{bfs}_input.txt'
+
+    tt = ToboganTrajectory(
+        base_map = read_lines(input_file),
+        brute_force_suffix = bfs
+    )
+
+    # Part 1
+    print(f"Brute Force: {bfs}")
+
+    trees = tt.count_trees(3)
+
+    print(f"Total Trees: {trees}")
+
+    # Part 2 stuff
+    route_product = tt.route_product((1, 3, 5, 7, (1,2)))
+
+    print(f"Route Product: {route_product}")
