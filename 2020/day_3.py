@@ -86,13 +86,14 @@ class ToboganTrajectory:
     """
     #endregion
     
-    def __init__(self, base_map, brute_force_suffix):
+    def __init__(self, base_map, brute_force_suffix='', write_marked_map=False):
         """
         docstring
         """
         self.base_map = base_map
         self.base_map_width = len(base_map[0])
         self.brute_force_suffix = brute_force_suffix
+        self.write_marked_map = write_marked_map
     
     def getCoordinate(self, x, y):
         """
@@ -100,10 +101,13 @@ class ToboganTrajectory:
         """
         return self.base_map[x][y]
 
-    def count_trees(self, right_distance, down_distance=1, write_marked_map=False, **kwargs):
+    def count_trees(self, right_distance, down_distance=1, write_marked_map=None, **kwargs):
         """
         docstring
         """
+        if(not write_marked_map):
+            write_marked_map = self.write_marked_map
+
         right_position = 0
         trees = 0
 
@@ -139,9 +143,9 @@ class ToboganTrajectory:
 
         for slope in slopes:
             if type(slope) == tuple:
-                product = product * tt.count_trees(*slope, True)
+                product = product * self.count_trees(*slope)
             else:
-                product = product * tt.count_trees(slope, write_marked_map=True)
+                product = product * self.count_trees(slope)
 
         return product
 
@@ -151,7 +155,8 @@ if __name__ == "__main__":
 
     tt = ToboganTrajectory(
         base_map = read_lines(input_file),
-        brute_force_suffix = bfs
+        brute_force_suffix = bfs,
+        write_marked_map=True
     )
 
     # Part 1

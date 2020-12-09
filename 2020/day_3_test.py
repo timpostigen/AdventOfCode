@@ -21,15 +21,16 @@ def test_count_tree(right_distance, expected_trees, limit):
     assert actual_trees == expected_trees
 
 def test_route_product():
-    expected_product = 12
-
-    base_map = read_lines('day_3_input.txt')
+    expected_product = 2224913600
 
     tt = ToboganTrajectory(
-        base_map = base_map
+        base_map = read_lines('day_3_input.txt')
     )
+
+    # Part 2 stuff
+    actual_product = tt.route_product((1, 3, 5, 7, (1,2)))
     
     # Act & Assert
-    actual_product = tt.route_product((1, 3, 5, 7, (1,2)))
+    # actual_product = tt.route_product((1, 3, 5, 7, (1,2)))
 
     assert actual_product == expected_product
