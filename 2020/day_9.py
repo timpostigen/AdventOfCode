@@ -52,7 +52,10 @@ class EncodingError:
 
     The first step of attacking the weakness in the XMAS data is to find the first number in the list (after the preamble) which is not the sum of two of the 25 numbers before it. What is the first number that does not have this property?
 
+    105950735
+
     --- Part Two ---
+
     The final step in breaking the XMAS encryption relies on the invalid number you just found: you must find a contiguous set of at least two numbers in your list which sum to the invalid number from step 1.
 
     Again consider the above example:
@@ -85,6 +88,7 @@ class EncodingError:
     What is the encryption weakness in your XMAS-encrypted list of numbers?
 
 
+
     Notes:
     First number: 8
     '''
@@ -98,7 +102,6 @@ class EncodingError:
 
         self.preamble = self.full_stream[:25]
         self.data = self.full_stream[25:]
-
 
     def find_outlier(self):
         """
@@ -129,8 +132,23 @@ class EncodingError:
 
         return outlier
 
+    def find_invalid_sum(self, outlier):
+
+
+        return None, None
+
+
 if __name__ == "__main__":
     data_stream = read_lines(f'{Path(__file__).stem}_input.txt', targetType=-1)
 
-    ee = EncodingError(data_stream)
-    print(ee.find_outlier())
+    outlier = 105950735
+    if(not outlier):
+        ee = EncodingError(data_stream)
+        outlier = ee.find_outlier()
+        print(outlier)
+
+    smallest, largest = ee.find_invalid_sum(outlier)
+
+    weakness_sum = smallest + largest
+
+    print(weakness_sum)
