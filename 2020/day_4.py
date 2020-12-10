@@ -1,3 +1,4 @@
+from pathlib import Path
 from utility import read_lines
 
 class PassportProcessing:
@@ -52,4 +53,21 @@ class PassportProcessing:
 
     """
     # endregion
+
+    def count_valid_passports(self):
+        """
+        docstring
+        """
+        pass
+
+    def validate_passport(self, passport):
+        """
+        docstring
+        """
+        pass
     pass
+
+if __name__ == "__main__":
+    passports = read_lines(f'{Path(__file__).stem}_input.txt')
+
+    
