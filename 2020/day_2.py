@@ -1,4 +1,5 @@
-from utility import read_lines
+from utility import get_input_file
+from pathlib import Path
 import re
 
 class passwdPhilo:
@@ -99,15 +100,16 @@ class passwdPhilo:
         
         return count
 
-pp = passwdPhilo()
+if __name__ == "__main__":
+    pp = passwdPhilo()
 
-password_lines = []
-for line in read_lines('day_2_input.txt'):
-    parsed_password = pp.parse_password_line(line)
-    password_lines.append(parsed_password)
+    password_lines = []
+    for line in get_input_file(f'{Path(__file__).stem}_input.txt'):
+        parsed_password = pp.parse_password_line(line)
+        password_lines.append(parsed_password)
 
-pp.password_entries = password_lines
+    pp.password_entries = password_lines
 
-# valid_password = pp.validate_password(**pp.password_entries[0])
+    # valid_password = pp.validate_password(**pp.password_entries[0])
 
-print(pp.count_valid_passwords())
+    print(pp.count_valid_passwords())

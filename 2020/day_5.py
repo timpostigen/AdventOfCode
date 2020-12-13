@@ -1,7 +1,7 @@
 import argparse
 from math import ceil
+from utility import get_input_file
 from pathlib import Path
-from utility import read_lines
 
 class BinaryBoarding():
     #region
@@ -142,13 +142,7 @@ class BinaryBoarding():
     
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description='setup solution files')
-    parser.add_argument('input_file', nargs='?', type=str, help='path of the input file')
-    args = parser.parse_args()
-
-    input_file = args.input_file or f'{Path(__file__).stem}_input.txt'
-
-    boarding_passes = read_lines(input_file)
+    boarding_passes = get_input_file(f'{Path(__file__).stem}_input.txt')
 
     bb = BinaryBoarding(boarding_passes)
 

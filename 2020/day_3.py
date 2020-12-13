@@ -1,4 +1,5 @@
-from utility import read_lines
+from utility import get_input_file
+from pathlib import Path
 
 class ToboganTrajectory:
     # region --- Day 3: Toboggan Trajectory --- docstring
@@ -151,10 +152,9 @@ class ToboganTrajectory:
 
 if __name__ == "__main__":
     bfs = '_brute_force'
-    input_file = f'day_3{bfs}_input.txt'
 
     tt = ToboganTrajectory(
-        base_map = read_lines(input_file),
+        base_map = get_input_file(f'{Path(__file__).stem}_input.txt'),
         brute_force_suffix = bfs,
         write_marked_map=True
     )

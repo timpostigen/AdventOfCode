@@ -1,4 +1,5 @@
-from utility import read_lines
+from utility import get_input_file
+from pathlib import Path
 
 class ReportRepair(object):
     # region --- Day 1: Report Repair ---
@@ -54,10 +55,11 @@ class ReportRepair(object):
                     if expenseSum == targetSum:
                         return first_expense * second_expense * third_expense
 
-targetSum = 2020
+if __name__ == "__main__":
+    targetSum = 2020
 
-expenses = read_lines('day_1_input.txt', 1)
+    expenses = get_input_file(f'{Path(__file__).stem}_input.txt')
 
-rr = ReportRepair()
+    rr = ReportRepair()
 
-print(rr.productOfTripleSumMatchingEntries(targetSum, expenses))
+    print(rr.productOfTripleSumMatchingEntries(targetSum, expenses))

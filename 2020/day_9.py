@@ -1,4 +1,4 @@
-from utility import read_lines
+from utility import get_input_file
 from pathlib import Path
 
 class EncodingError:

@@ -1,6 +1,6 @@
 from collections import OrderedDict
+from utility import get_input_file
 from pathlib import Path
-from utility import read_lines
 import re
 
 class PassportProcessing:
@@ -200,11 +200,7 @@ class PassportProcessing:
         return valid
 
 if __name__ == "__main__":
-    
-    input_path = f'{Path(__file__).stem}_input.txt'
-    input_path = Path(r'G:\Users\Tim\Documents\soul\projects\AdventOfCode_Day4\AdventOfCode_Day4\solution_input.txt')
-
-    raw_passport_feed = read_lines(input_path)
+    raw_passport_feed = get_input_file(f'{Path(__file__).stem}_input.txt')
 
     pp = PassportProcessing(raw_passport_feed)
 
