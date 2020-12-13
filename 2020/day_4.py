@@ -200,13 +200,17 @@ class PassportProcessing:
         return valid
 
 if __name__ == "__main__":
-    raw_passport_feed = read_lines(f'{Path(__file__).stem}_input.txt')
+    
+    input_path = f'{Path(__file__).stem}_input.txt'
+    input_path = Path(r'G:\Users\Tim\Documents\soul\projects\AdventOfCode_Day4\AdventOfCode_Day4\solution_input.txt')
+
+    raw_passport_feed = read_lines(input_path)
 
     pp = PassportProcessing(raw_passport_feed)
 
     passports = pp.parse_passport_feed(pp.raw_passport_feed)
-    print(len(passports))
+    print(f"Parsed passports: {len(passports)}")
 
     valid_passports = pp.count_valid_passports(passports)
 
-    print(valid_passports)
+    print(f"Valid passports: {valid_passports}")
