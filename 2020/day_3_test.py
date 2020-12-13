@@ -6,7 +6,8 @@ from utility import read_lines
     (1, 5,  35),
     (3, 11, 15),
     (5, 0,  10),
-    (7, 1,  10)] )
+    (7, 1,  10)
+])
 def test_count_tree(right_distance, expected_trees, limit):
     # Arrange
 
