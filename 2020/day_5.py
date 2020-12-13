@@ -1,3 +1,5 @@
+import argparse
+from math import ceil
 from pathlib import Path
 from utility import read_lines
 
@@ -46,10 +48,25 @@ class BinaryBoarding():
 
     As a sanity check, look through your list of boarding passes. What is the highest seat ID on a boarding pass?
 
+    --- Part Two ---
+
+    Ding! The "fasten seat belt" signs have turned on. Time to find your seat.
+
+    It's a completely full flight, so your seat should be the only missing boarding pass in your list. However, there's a catch: some of the seats at the very front and back of the plane don't exist on this aircraft, so they'll be missing from your list as well.
+
+    Your seat wasn't at the very front or back, though; the seats with IDs +1 and -1 from yours will be in your list.
+
+    What is the ID of your seat?
+
+
     Notes:
     Rows are 0-127, columns are 0-7
+    
+    Highest pass is 127x7
 
     Find row, find column, multiply
+
+    0 << 732 < 744 < 861x2 < 875 < 991 < answer << 1023    [15129]
 
     '''
     #endregion
@@ -73,6 +90,14 @@ class BinaryBoarding():
         
         return highest_seat_id
 
+    def get_my_seat_id(self):
+        all_seat_ids = []
+
+        for boarding_pass in self.boarding_passes:
+            all_seat_ids.append(self.get_seat_id(boarding_pass))
+
+        return sorted(all_seat_ids)
+
     def get_seat_id(self, boarding_pass):
         """
         docstring
@@ -87,19 +112,53 @@ class BinaryBoarding():
         for part in boarding_pass:
             # TODO: validate .5 rounding
             new_row = int((row_range[0] + row_range[1])/2)
+            new_column = int((column_range[0] + column_range[1])/2)
 
             if part == 'F':
                 row_range = (new_row, row_range[1])
+                if abs(row_range[0] - row_range[1]) <= 1:
+                    row = row_range[1]
             if part == 'B':
                 row_range = (row_range[0], new_row)
+                if abs(row_range[0] - row_range[1]) <= 1:
+                    row = row_range[0] - 1
+            
+            if part == 'R':
+                column_range = (new_column, column_range[1])
+                if abs(column_range[0] - column_range[1]) <= 1:
+                    column = column_range[1] - 1
+                
+            if part == 'L':
+                column_range = (column_range[0], new_column)
+                if abs(column_range[0] - column_range[1]) <= 1:
+                    column = column_range[0]
+                
+                
             pass
-
-        return row * column_range[0]
+        
+        seat_id = row * 8 + column
+        
+        return seat_id
     
 
 if __name__ == "__main__":
-    boarding_passes = read_lines(f'{Path(__file__).stem}_input.txt')
+    parser = argparse.ArgumentParser(description='setup solution files')
+    parser.add_argument('input_file', nargs='?', type=str, help='path of the input file')
+    args = parser.parse_args()
 
-    bb = BinaryBoarding(boarding_passes[:3])
+    input_file = args.input_file or f'{Path(__file__).stem}_input.txt'
 
-    bb.get_highest_seat_id()
+    boarding_passes = read_lines(input_file)
+
+    bb = BinaryBoarding(boarding_passes)
+
+    print(bb.get_highest_seat_id())
+
+    counter = 0
+    for seat_id in bb.get_my_seat_id():
+        print(seat_id, end=', ')
+        counter += 1
+    
+        if counter == 10:
+            print()
+            counter = 0
