@@ -139,7 +139,7 @@ class EncodingError:
 
 
 if __name__ == "__main__":
-    data_stream = read_lines(f'{Path(__file__).stem}_input.txt', targetType=-1)
+    data_stream = get_input_file(f'{Path(__file__).stem}_input.txt', targetType=-1)
 
     outlier = 105950735
     if(not outlier):
