@@ -1,3 +1,7 @@
+from collections import defaultdict
+from re import match, findall
+from pathlib import Path
+
 class HandyHaversacks():
     #region --- Day 7: Handy Haversacks ---
     """
@@ -34,10 +38,77 @@ class HandyHaversacks():
 
     How many bag colors can eventually contain at least one shiny gold bag? (The list of rules is quite long; make sure you get all of it.)
 
+    Notes:
+    0 << 5 < answer << len(rules) = 594
+    answer probably < 22 bc not taking into account bag limits
     """
     #endregion
 
-    pass
+    def __init__(self):
+        """
+        docstring
+        """
+        self.bag_rules = {}
+        self.input_file_name = Path(__file__).parent / f'{Path(__file__).stem}_input.txt'
+
+    def parse_bag_rules(self):
+        with open(self.input_file_name) as file:
+            for line in file:
+                line = line.strip()
+
+                bag_color_label = 'bag_color'
+                bag_rule_line_label = 'bag_rule_line'
+
+                rule_entry = match(f'(?P<{bag_color_label}>.*) bags contain (?P<{bag_rule_line_label}>.*)', line).groupdict()
+                bag_color = rule_entry[bag_color_label]
+                bag_rule_line = rule_entry[bag_rule_line_label]
+
+                if bag_rule_line == 'no other bags.':
+                    self.bag_rules[bag_color] = None
+                else:
+                    bag_rule = {}
+                    for rule in findall(r'(\d+) (\w+ \w+) \w+', bag_rule_line):
+                        bag_rule[rule[1]] = int(rule[0])
+                    
+                    self.bag_rules[bag_color] = bag_rule
+
+        return self.bag_rules
+
+    def count_contains_bag(self, bag_color):
+        """
+        docstring
+        """
+
+        can_contain = 0
+
+        for bag_rule in self.bag_rules:
+            if(self.contains_bag(bag_rule, bag_color)):
+                can_contain += 1
+
+        return can_contain
+
+    # recursive
+    # work backward?
+    def contains_bag(self, bag_rule_name, bag_color):
+        # 2 base cases then recursion
+        bag_rule = self.bag_rules[bag_rule_name]
+
+        if bag_rule == None:
+            return False
+        elif bag_color in bag_rule.keys():
+            return True
+        else:
+            for nested_bag_rule_name in bag_rule.keys():
+                return self.contains_bag(nested_bag_rule_name, bag_color)
 
 if __name__ == "__main__":
-    pass
+    hh = HandyHaversacks()
+
+    hh.parse_bag_rules()
+
+    print('parsed')
+
+    bag_color = 'shiny gold'
+    bags = hh.count_contains_bag('shiny gold')
+
+    print(bags)
