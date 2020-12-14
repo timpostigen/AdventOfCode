@@ -86,6 +86,13 @@ class HandheldHalting(object):
 
     Fix the program so that it terminates normally by changing exactly one jmp (to nop) or nop (to jmp). What is the value of the accumulator after the program terminates?
 
+    Notes:
+    work back from last/2nd to last statement or 
+
+    explore the loop
+
+
+
     """
     #endregion
     def __init__(self, program=None):
@@ -93,8 +100,12 @@ class HandheldHalting(object):
         docstring
         """
         self.program = program
+        self.last_instruction = len(program) + 1
         self.accumulator = 0
         self.instruction_pointer = 0
+        self.fixed_instruction = None
+        self.candidates = []
+        self.ran_instruction_groups = []
         self.processor = {
             # increase accumulator, instruction += 1
             'acc': self.increase_accumulator,
@@ -105,7 +116,7 @@ class HandheldHalting(object):
         }
 
     def increase_accumulator(self, amount):
-        self.accumulator += int(amount)
+        self.accumulator += amount
         self.instruction_pointer += 1
         pass
 
@@ -118,25 +129,53 @@ class HandheldHalting(object):
         pass
 
     def accumulator_before_repeat_instruction(self, starting_instruction):
-        # maybe reset? self.__init__()
         self.instruction_pointer = starting_instruction
         ran_instructions = []
-        
 
         while not(self.instruction_pointer in ran_instructions):
-            # run instruction
             ran_instructions.append(self.instruction_pointer)
             op, arg = self.program[self.instruction_pointer].split()
+            arg = int(arg)
 
             self.processor[op](arg)
-            # ran_instructions.add[self.instruction_pointer]
-            # self.accumulator_before_repeat_instruction(self.instruction)
-            pass
             
         return self.accumulator
+
+    def fix_program(self, starting_instruction):
+        self.instruction_pointer = starting_instruction
+        current_ran_instructions = ran_instructions = []
+        
+
+        while self.instruction_pointer != self.last_instruction:
+            current_instruction_pointer = self.instruction_pointer
+            current_ran_instructions.append(self.instruction_pointer)
+            ran_instructions.append(self.instruction_pointer)
+
+            try:
+                op, arg = self.program[self.instruction_pointer].split()
+            except:
+               return self.ran_instruction_groups
+            
+            arg = int(arg)
+
+            if op == 'nop' and not((self.instruction_pointer + arg) in ran_instructions): # and self.looping:
+                self.ran_instruction_groups.append(current_ran_instructions)
+                current_ran_instructions = []
+                self.candidates.append(current_instruction_pointer)
+                op = 'jmp'
+
+            if op == 'jmp' and not((self.instruction_pointer + 1) in ran_instructions): # and self.looping:
+                self.ran_instruction_groups.append(current_ran_instructions)
+                current_ran_instructions = []
+                op = 'nop'
+
+
+            self.processor[op](arg)
 
 if __name__ == "__main__":
     hh = HandheldHalting(get_input_file(f'{Path(__file__).stem}_input.txt'))
 
     # start with the first instruction
     print("accumulator before repeat: ", hh.accumulator_before_repeat_instruction(0))
+
+    print("bad instruction: ", hh.fix_program(0))
