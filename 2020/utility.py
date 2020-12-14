@@ -18,10 +18,10 @@ def read_lines(line_filename, targetType=None, trim = False):
     return lines
 
 def get_input_file(input_file_name=None):
-    # parser = ArgumentParser(description='setup solution files')
-    # parser.add_argument('input_file', nargs='?', type=str, help='path of the input file')
-    # args = parser.parse_args()
+    parser = ArgumentParser(description='setup solution files')
+    parser.add_argument('input_file', nargs='?', type=str, help='path of the input file')
+    args = parser.parse_args()
 
-    # input_file_name = args.input_file or input_file_name
+    input_file_name = args.input_file or input_file_name
 
     return read_lines(input_file_name)
