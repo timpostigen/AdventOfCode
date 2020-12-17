@@ -1,5 +1,7 @@
 from pathlib import Path
 from utility import get_input_file
+from re import match
+
 
 class DockingData():
     #region --- Day 14: Docking Data ---
@@ -52,6 +54,23 @@ class DockingData():
         docstring
         """
         self.initialization_program = initialization_program
+        self.mask = None
+        self.mem = {}
+
+    def execute_initialization_program(self):
+        """
+        Could do this one more memory efficiently
+        """
+        for op in self.initialization_program:
+            if op.startswith('mask'):
+                m = match(r'mask = ([10X]+)', op)
+                self.mask = m.group(1)
+
+            elif op.startswith('mem'):
+                m = match(r'mem\[(\d+)\] = (\d+)', op)
+                self.mem[m.group(1)] = m.group(2)
+        
+        
 
 if __name__ == "__main__":
     dd = DockingData(get_input_file(f'{Path(__file__).stem}_input.txt'))
