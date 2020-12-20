@@ -1,6 +1,7 @@
 from pathlib import Path
 from utility import get_input_file
 from re import match
+from collections import Counter
 
 
 class DockingData():
@@ -47,6 +48,62 @@ class DockingData():
 
     Execute the initialization program. What is the sum of all values left in memory after it completes? (Do not truncate the sum to 36 bits.)
 
+    --- Part Two ---
+
+    For some reason, the sea port's computer system still can't communicate with your ferry's docking program. It must be using version 2 of the decoder chip!
+
+    A version 2 decoder chip doesn't modify the values being written at all. Instead, it acts as a memory address decoder. Immediately before a value is written to memory, each bit in the bitmask modifies the corresponding bit of the destination memory address in the following way:
+
+        If the bitmask bit is 0, the corresponding memory address bit is unchanged.
+        If the bitmask bit is 1, the corresponding memory address bit is overwritten with 1.
+        If the bitmask bit is X, the corresponding memory address bit is floating.
+
+    A floating bit is not connected to anything and instead fluctuates unpredictably. In practice, this means the floating bits will take on all possible values, potentially causing many memory addresses to be written all at once!
+
+    For example, consider the following program:
+
+    mask = 000000000000000000000000000000X1001X
+    mem[42] = 100
+    mask = 00000000000000000000000000000000X0XX
+    mem[26] = 1
+
+    When this program goes to write to memory address 42, it first applies the bitmask:
+
+    address: 000000000000000000000000000000101010  (decimal 42)
+    mask:    000000000000000000000000000000X1001X
+    result:  000000000000000000000000000000X1101X
+
+    After applying the mask, four bits are overwritten, three of which are different, and two of which are floating. Floating bits take on every possible combination of values; with two floating bits, four actual memory addresses are written:
+
+    000000000000000000000000000000011010  (decimal 26)
+    000000000000000000000000000000011011  (decimal 27)
+    000000000000000000000000000000111010  (decimal 58)
+    000000000000000000000000000000111011  (decimal 59)
+
+    Next, the program is about to write to memory address 26 with a different bitmask:
+
+    address: 000000000000000000000000000000011010  (decimal 26)
+    mask:    00000000000000000000000000000000X0XX
+    result:  00000000000000000000000000000001X0XX
+
+    This results in an address with three floating bits, causing writes to eight memory addresses:
+
+    000000000000000000000000000000010000  (decimal 16)
+    000000000000000000000000000000010001  (decimal 17)
+    000000000000000000000000000000010010  (decimal 18)
+    000000000000000000000000000000010011  (decimal 19)
+    000000000000000000000000000000011000  (decimal 24)
+    000000000000000000000000000000011001  (decimal 25)
+    000000000000000000000000000000011010  (decimal 26)
+    000000000000000000000000000000011011  (decimal 27)
+
+    The entire 36-bit address space still begins initialized to the value 0 at every address, and you still need the sum of all values left in memory at the end of the program. In this example, the sum is 208.
+
+    Execute the initialization program using an emulator for a version 2 decoder chip. What is the sum of all values left in memory after it completes?
+
+    Notes:
+    p2 - 915556128584 < answer
+
     """
     #endregion
     def __init__(self, initialization_program):
@@ -72,16 +129,55 @@ class DockingData():
 
             elif op.startswith('mem'):
                 m = match(r'mem\[(\d+)\] = (\d+)', op)
+                address = m.group(1)
                 value = format(int(m.group(2)), f'0{self.width}b')
                 
                 # apply mask
-                masked = ''.join([ valbit if maskbit == 'X' else maskbit for maskbit, valbit in zip(self.mask, value) ])
+                masked_value = ''.join([ valbit if maskbit == 'X' else maskbit for maskbit, valbit in zip(self.mask, value) ])
 
-                self.mem[m.group(1)] = masked
+                self.mem[address] = masked_value
+
+    def v2_decoder(self):
+        """
+        Could do this one more memory efficiently by streaming file.
+
+        Use actual binary values instead of strings
+        """
+        for op in self.initialization_program:
+            if op.startswith('mask'):
+                # convert the mask?
+                m = match(r'mask = ([10X]+)', op)
+                self.mask = m.group(1)
+
+            elif op.startswith('mem'):
+                m = match(r'mem\[(\d+)\] = (\d+)', op)
+                address = format(int(m.group(1)), f'0{self.width}b')
+                value = format(int(m.group(2)), f'0{self.width}b')
+
+                # mask
+                
+                # generate addresses
+                masked_address = [ addrbit if maskbit == '0' else maskbit for maskbit, addrbit in zip(self.mask, address) ]
+                
+                floating_address_bit_postitions = [i for i, ltr in enumerate(masked_address) if ltr == 'X']
+
+                floating_address_bits = len(floating_address_bit_postitions)
+
+
+
+                for float_count in range(2**floating_address_bits):
+                    current_bits = list(format(float_count, f'0{floating_address_bits}b'))
+                    
+                    for idx, position in enumerate(floating_address_bit_postitions):
+                        masked_address[position] = current_bits[idx]
+
+                    self.mem[''.join(masked_address)] = value
+
+                pass
 
     def sum_memory(self):
         numerical_values = [int(value, 2) for value in self.mem.values()]
-        
+
         return sum(numerical_values)
                 
         
@@ -90,7 +186,7 @@ class DockingData():
 if __name__ == "__main__":
     dd = DockingData(get_input_file(f'{Path(__file__).stem}_input.txt'))
 
-    dd.execute_initialization_program()
+    dd.v2_decoder()
 
     print(dd.sum_memory())
 
