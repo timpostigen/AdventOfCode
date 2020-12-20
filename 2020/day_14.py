@@ -56,21 +56,42 @@ class DockingData():
         self.initialization_program = initialization_program
         self.mask = None
         self.mem = {}
+        self.width = 36
 
     def execute_initialization_program(self):
         """
-        Could do this one more memory efficiently
+        Could do this one more memory efficiently by streaming file.
+
+        Use actual binary values instead of strings
         """
         for op in self.initialization_program:
             if op.startswith('mask'):
+                # convert the mask?
                 m = match(r'mask = ([10X]+)', op)
                 self.mask = m.group(1)
 
             elif op.startswith('mem'):
                 m = match(r'mem\[(\d+)\] = (\d+)', op)
-                self.mem[m.group(1)] = m.group(2)
+                value = format(int(m.group(2)), f'0{self.width}b')
+                
+                # apply mask
+                masked = ''.join([ valbit if maskbit == 'X' else maskbit for maskbit, valbit in zip(self.mask, value) ])
+
+                self.mem[m.group(1)] = masked
+
+    def sum_memory(self):
+        numerical_values = [int(value, 2) for value in self.mem.values()]
+        
+        return sum(numerical_values)
+                
         
         
 
 if __name__ == "__main__":
     dd = DockingData(get_input_file(f'{Path(__file__).stem}_input.txt'))
+
+    dd.execute_initialization_program()
+
+    print(dd.sum_memory())
+
+    
