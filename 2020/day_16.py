@@ -53,8 +53,7 @@ class TicketTranslation():
         """
         self.valid_regions = {}
         for lines in gathered_data:
-            
-            
+            pass
 
 if __name__ == "__main__":
     tt = TicketTranslation(get_input_file(f'{Path(__file__).stem}_input.txt'))
