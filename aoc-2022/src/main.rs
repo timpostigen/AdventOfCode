@@ -3,20 +3,28 @@ use std::io::BufReader;
 use std::io::prelude::*;
 use std::path::Path;
 
+// trivial to use map reduce after structuring the data then sort
 pub fn day_1(rough_food_list: &String) -> i32 {
 	let food_list = rough_food_list.lines();
 
 	let mut elf_calories = 0;
-	let mut most_calories = -1;
+	let mut most_calories = vec![1, 2, 3];
 
 	for food_item_calories in food_list {
 		let calories = food_item_calories.trim();
 
 		if calories.is_empty() {
-			if elf_calories > most_calories {
-				println!("{elf_calories}");
-				most_calories = elf_calories;
+			for total in most_calories.iter() {
+				if elf_calories > *total {
+					most_calories.push(elf_calories);
+					most_calories.sort_unstable();
+					most_calories.reverse();
+					most_calories.pop();
+
+					break;
+				}
 			}
+			
 			elf_calories = 0;
 			continue;
 		}
@@ -24,7 +32,7 @@ pub fn day_1(rough_food_list: &String) -> i32 {
 		elf_calories += calories.trim().parse::<i32>().unwrap();	
 	}
 
-	most_calories
+	most_calories.iter().sum()
 }
 
 pub fn read_file(path: &Path) -> std::io::Result<String> {
