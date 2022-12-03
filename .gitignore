@@ -4,3 +4,4 @@ launch.json
 .vscode
 *output.txt
 target
+headers.json
