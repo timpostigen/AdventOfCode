@@ -3,24 +3,25 @@ use std::io::BufReader;
 use std::io::prelude::*;
 use std::path::Path;
 
-pub fn day_1(food_list: &String) -> i32 {
-	let mut elf_inventories = food_list.split("\n\n");
+pub fn day_1(rough_food_list: &String) -> i32 {
+	let food_list = rough_food_list.lines();
+
+	let mut elf_calories = 0;
 	let mut most_calories = -1;
 
-	for elf_inventory in elf_inventories {
-		let mut food_items = elf_inventory.split("\n");
+	for food_item_calories in food_list {
+		let calories = food_item_calories.trim();
 
-		let mut elf_calories = 0;
-		
-		for calories in food_items {
-			print!("{calories}");
-			elf_calories += calories.parse::<i32>().unwrap();
-
+		if calories.is_empty() {
 			if elf_calories > most_calories {
+				println!("{elf_calories}");
 				most_calories = elf_calories;
 			}
+			elf_calories = 0;
+			continue;
 		}
 
+		elf_calories += calories.trim().parse::<i32>().unwrap();	
 	}
 
 	most_calories
@@ -42,7 +43,7 @@ mod tests {
 
     #[test]
     fn test_day_1() {
-		let path = Path::new("./day_1.txt");
+		let path = Path::new("./data/day_1_example.txt");
     	let result = read_file(path);
 
 		if let Ok(contents) = &result {
@@ -52,5 +53,12 @@ mod tests {
 }
 
 fn main(){
-	println!("Add call.")
+	// Day 1
+	let path = Path::new("./data/day_1_input.txt");
+	let result = read_file(path);
+
+	if let Ok(contents) = &result {
+		let max = day_1(contents);
+		println!("{max}");
+	}
 }
